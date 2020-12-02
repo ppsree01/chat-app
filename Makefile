@@ -3,7 +3,7 @@ CURDIR := $(shell pwd)
 SERVER := server
 CONTAINERS := containers
 CHAT_APP := chat-app
-STOP := docker-compose down --remove-orphans
+STOP := docker-compose stop
 START := docker-compose up -d --build
 
 stop-server:
