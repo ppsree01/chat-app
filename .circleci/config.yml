@@ -19,6 +19,10 @@ jobs:
             ls -al
             echo '^^^That should look familiar^^^'
       - run:
+          name: 'Install SSH'
+          command: |
+            sudo apt-get install openssh-server
+      - run:
           name: SSHing
           command: |
             ssh ppsree@ppsree.net 'ls'
