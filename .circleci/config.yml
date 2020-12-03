@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: ubuntu:16.04
+      - image: rastasheep/ubuntu-sshd
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -18,10 +18,6 @@ jobs:
           command: |
             ls -al
             echo '^^^That should look familiar^^^'
-      - run:
-          name: 'Install SSH'
-          command: |
-            apt-get install openssh-server
       - run:
           name: SSHing
           command: |
