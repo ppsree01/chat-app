@@ -21,4 +21,4 @@ jobs:
       - run:
           name: SSHing
           command: |
-            ssh ppsree@ppsree.net 'ls'
+            ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'ls'
