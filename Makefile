@@ -41,7 +41,8 @@ stop-chat-app:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(CHAT_APP)/$(DOCKER_COMPOSE_FILE) $(STOP)
 start-chat-app:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(CHAT_APP)/$(DOCKER_COMPOSE_FILE) $(START)
-start: start-containers start-server start-chat-app
+docker-status:
 	docker ps
+start: start-containers start-server start-chat-app
 stop: stop-containers stop-server stop-chat-app
-	docker ps 
+restart: stop start docker-status
