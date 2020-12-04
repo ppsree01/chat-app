@@ -44,4 +44,4 @@ start-chat-app:
 start: start-containers start-server start-chat-app
 	docker ps
 stop: stop-containers stop-server stop-chat-app
-	docker ps
+	docker ps 
