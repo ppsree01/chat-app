@@ -12,7 +12,7 @@ jobs:
           name: Updating code
           command: |
             ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && git pull'
-       - run:
+      - run:
           name: Restarting containers
           command: |
             ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && make restart'
