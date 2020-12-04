@@ -9,6 +9,11 @@ jobs:
             - "7f:b7:54:67:2e:ca:87:39:72:30:29:47:06:bb:96:a5"
       - checkout
       - run:
+          name: Install Git
+          command: |
+            apt-get -y update
+            apt-get -y install git
+      - run:
           name: The First Step
           command: |
             echo 'Hello World!'
