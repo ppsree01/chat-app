@@ -9,9 +9,13 @@ jobs:
             - "7f:b7:54:67:2e:ca:87:39:72:30:29:47:06:bb:96:a5"
       - checkout
       - run:
-          name: Running Update
+          name: Updating code
           command: |
-            ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && git pull && make restart'
+            ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && git pull'
+       - run:
+          name: Restarting containers
+          command: |
+            ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && make restart'
       # - run:
       #     name: Pulling Latest build for nginx from Git Repo
       #     command: |
