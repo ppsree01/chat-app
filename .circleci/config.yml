@@ -21,18 +21,7 @@ jobs:
       - run:
           name: SSHing into Server
           command: |
-            ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'ls'
-      - run:
-          name: Pulling Application Code from Git Repo
-          command: |
-            cd chat-app
-            git pull
-      - run:
-          name: Restarting Existing Instances of Docker
-          command: |
-            make stop
-            make start
-            cd ..
+            ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && git pull && make restart'
       # - run:
       #     name: Pulling Latest build for nginx from Git Repo
       #     command: |
