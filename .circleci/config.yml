@@ -7,24 +7,9 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "7f:b7:54:67:2e:ca:87:39:72:30:29:47:06:bb:96:a5"
-      - run:
-          name: Install Git
-          command: |
-            apt-get -y update
-            apt-get -y install git
       - checkout
       - run:
-          name: The First Step
-          command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
-      - run:
-          name: Code Has Arrived
-          command: |
-            ls -al
-            echo '^^^That should look familiar^^^'
-      - run:
-          name: SSHing into Server
+          name: Running Update
           command: |
             ssh -o StrictHostKeyChecking=no ppsree@ppsree.net 'cd chat-app && git pull && make restart'
       # - run:
