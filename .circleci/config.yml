@@ -37,4 +37,3 @@ jobs:
       #     command: |
       #       make stop
       #       make start
-
