@@ -1,0 +1,7 @@
+version: '3.1'
+services:
+  chat-server:
+    build: .
+networks:
+  default:
+    name: main-network
