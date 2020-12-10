@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {initializeMongo} from "./mongo-init.js"
 import routes from "./routes.js";
 const apps = express();
-const port = 8080;
+const port = 80;
 
 initializeMongo(() => {
     console.log("Entered");
