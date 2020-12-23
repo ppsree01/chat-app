@@ -12,7 +12,7 @@ export function getMessages(userid, callback) {
 }
 
 export function addMessage(userid, msg, callback) {
-    msgDB[userid].push(msg);
+    // msgDB[userid].push(msg);
     addMessageToDB(userid, msg, callback);
     // callback();
 }
