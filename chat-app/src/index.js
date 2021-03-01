@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Chat from './Chat';
+import Signin from './Signin';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Chat />
+    {/* <Chat /> */}
+    <Signin />
   </React.StrictMode>,
   document.getElementById('root')
 );

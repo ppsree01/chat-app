@@ -1,0 +1,18 @@
+.avatar {
+    border-radius: 50px;
+    border: 5px solid #5aae97;
+    padding: 1.8em 2em;
+    width: 10%;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+    background-color: #5aae97;
+}
+
+.spacer {
+    padding-top: 2em;
+    padding: 1em;
+    margin-top: 5em;
+    margin-bottom: 2em;
+    text-align: center;
+}
