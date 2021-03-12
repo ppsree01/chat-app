@@ -8,8 +8,8 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Chat /> */}
-    <Signin />
+    <Chat />
+    {/* <Signin /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
