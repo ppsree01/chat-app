@@ -8,7 +8,42 @@ const SERVER_URL = "api.ppsree.net";
 const axios = require('axios');
 const styles = {
     message: {
-        backgroundColor: 'yellow',
+        padding: '1em',
+        border: '1px solid gray',
+        marginBottom: '0px',
+        // fontFamily: 'roboto'
+    },
+    container: {
+        // textAlign: 'center',
+        // top: '20%',
+        // left: '30%',
+        position: 'relative',
+        height: '40vh',
+        margin: '1em',
+        // width: '80%',
+        maxWidth: '19em',
+        border: '1px solid gray',
+        boxSizing: 'border-box',
+        alignItems: 'center'
+    },
+    button: {
+        padding: '1em',
+        backgroundColor: 'rgb(59, 137, 116)',
+        border: '1px solid gray',
+        color: 'white',
+        fontWeight: 'bold',
+        // width: '100%'
+        // marginTop: '-1em'
+    },
+    typeContainer : {
+        display: 'flex',
+        padding: '1em',
+        margin: '0',
+        bottom: '-.2em',
+        position: 'absolute',
+        // width: '110%',
+        left: '0',
+        right: '0'
     }
 };
 
@@ -70,15 +105,15 @@ function Chat() {
 
     return(
         <div>
-            <ChatCountDialog countOfChats={chatCount}/>
+            <div style={styles.container}><ChatCountDialog countOfChats={chatCount}/>
             {
                 !loadingStatus.isLoaded ? "Loading" : ""
             }
             {msgs}
             <br />
-            <textarea value={message} style={styles.message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)}/>
-            <br />
-            <button onClick={
+            <div style={styles.typeContainer}><textarea value={message} style={styles.message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)}/>
+            {/* <br /> */}
+            <button style={styles.button} onClick={
                 () => {
                     let random = Math.floor(Math.random()*11);
                     let date = new Date;
@@ -103,7 +138,7 @@ function Chat() {
                             
                     
                 }
-            }>Send</button>
+            }>Send</button></div></div>
         </div>
     );
 }
