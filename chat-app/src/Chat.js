@@ -11,6 +11,7 @@ const styles = {
         padding: '1em',
         border: '1px solid gray',
         marginBottom: '0px',
+        resize: 'none'
         // fontFamily: 'roboto'
     },
     container: {
