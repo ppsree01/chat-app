@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-function Message({text}) {
+function Message({text,id}) {
     const styles = {
         message : {
             backgroundColor: 'silver',
@@ -16,7 +16,7 @@ function Message({text}) {
         }
     }
     return (
-        <div style={styles.container}>
+        <div style={styles.container} data-id={id}>
             <p style={styles.message}>{text}</p>
         </div>
     );
