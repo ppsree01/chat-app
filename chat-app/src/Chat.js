@@ -18,7 +18,7 @@ const styles = {
         // textAlign: 'center',
         // top: '20%',
         // left: '30%',
-        overflow: 'scroll',
+        overflow: 'auto',
         position: 'fixed',
         height: '400px',
         margin: '1em',
