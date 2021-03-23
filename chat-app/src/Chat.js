@@ -18,11 +18,13 @@ const styles = {
         // textAlign: 'center',
         // top: '20%',
         // left: '30%',
-        position: 'relative',
-        height: '40vh',
+        overflow: 'scroll',
+        position: 'fixed',
+        height: '400px',
         margin: '1em',
         // width: '80%',
         maxWidth: '19em',
+        minWidth: '19em',
         border: '1px solid gray',
         boxSizing: 'border-box',
         alignItems: 'center'
@@ -40,11 +42,9 @@ const styles = {
         display: 'flex',
         padding: '1em',
         margin: '0',
-        bottom: '-.2em',
-        position: 'absolute',
+        position: 'fixed',
         // width: '110%',
-        left: '0',
-        right: '0'
+        top: '330px'
     }
 };
 
@@ -101,7 +101,7 @@ function Chat() {
 
     let msgs = [];
     for (let i=0; i<messages.length; i++) {
-        msgs.push(<Message key={i.toString()} text={messages[i].msg}/>);
+        msgs.push(<Message key={i.toString()} text={messages[i].msg} id={messages[i].id}/>);
     }
 
     return(
@@ -111,6 +111,7 @@ function Chat() {
                 !loadingStatus.isLoaded ? "Loading" : ""
             }
             {msgs}
+            <br /><br />
             <br />
             <div style={styles.typeContainer}><textarea value={message} style={styles.message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)}/>
             {/* <br /> */}

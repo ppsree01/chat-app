@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-function Message({text}) {
+function Message({text,id}) {
     const styles = {
         message : {
             backgroundColor: 'silver',
@@ -8,16 +8,15 @@ function Message({text}) {
             margin: '1em',
             border: '1px solid gray',
             borderRadius: '5px',
-            width: '20%',
-            maxWidth: '100%',
-            textAlign: 'left'
+            textAlign: 'left',
+            display: 'inline-block'
         },
         container : {
-            textAlign: 'right'
+            textAlign: 'left'
         }
     }
     return (
-        <div style={styles.container}>
+        <div style={styles.container} data-id={id}>
             <p style={styles.message}>{text}</p>
         </div>
     );
