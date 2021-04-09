@@ -1,8 +1,10 @@
 # Chat App
-Chat App is a simple Chat UI built to closely resemble the working of a personal Whatsapp Group.
+Chat App is a Fullstack Chat Application built to closely resemble the working of a personal Whatsapp Group.
 Take a look at it here: [chat.ppsree.net](http://chat.ppsree.net)
 
-The App currently supports storing text messages only.
+# Features
+- The App currently supports storing text messages only.
+- Message counter shows the total number of messages displayed on the chat.
 
 # Tech
 The below tools were used to build the Personal Chat App:
