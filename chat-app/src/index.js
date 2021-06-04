@@ -5,11 +5,12 @@ import App from './App';
 import Chat from './Chat';
 import Signin from './Signin';
 import reportWebVitals from './reportWebVitals';
+import Home from './Home';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Chat /> 
-    {/* <Signin /> */}
+    {/* <Chat />  */}
+    <Home />
   </React.StrictMode>,
   document.getElementById('root')
 );

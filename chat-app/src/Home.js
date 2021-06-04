@@ -1,6 +1,5 @@
 import React from 'react';
 import Login from './Login';
-import notesu from './notesu.jpeg'
 
 function Home() {
     const style = {
@@ -17,7 +16,7 @@ function Home() {
         <div className="flex h-screen" style={style}>
             <div className="text-center m-auto space-y-20 w-96 border-blue-700" >
                 <h3>NotesU</h3>
-                <p className="italic text-gray-700 text-xl">"Notes are an extension to the brain"</p>
+                <p className="italic text-gray-700 text-xl">"The short-term memory only retains information for three minutes; unless it is committed to paper you can lose an idea for ever."</p>
                 <Login />
             </div>
         </div>
