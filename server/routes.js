@@ -26,10 +26,7 @@ export default {
         handler: (req,res) => {
             var user = req.body.username;
             var pwd = req.body.password;
-            // console.log(req.body);
-            // console.log(req.username);
             validate(user, pwd, (result) => {
-                console.log(result);
                 res.send(result);
             });
 
@@ -42,8 +39,6 @@ export default {
             var msg = req.body.msg;
             var tag = req.body.tag;
             var type = req.body.type;
-            // console.log(req.body);
-            // console.log(req.username);
             addMessagesToRoom(rid, msg, tag, type, (response) => {
                 res.send(response);
             })
