@@ -45,7 +45,7 @@ export function validate(username, password, callback) {
     model.User.count((err, count) => {
         rid = count + 1;
     })
-    model.User.find({ 'uid': username, 'pwd': password }, function (err, entry) {
+    model.User.find({ 'uid': username}, function (err, entry) {
         if (err) {
             callback(err);
         } else {
@@ -59,11 +59,18 @@ export function validate(username, password, callback) {
                     if (err != null) {
                         callback(err);
                     } else {
-                        addDefaultMessage(rid);
-                        getRoomWithData(rid, callback);
+                        addDefaultMessage(rid, callback);
+                        
                     }
                 })
-            } else {
+            } else if (entry.length > 0 && entry["pwd"] != password)  {
+                callback({
+                    success: false,
+                    room : {},
+                    message : "Incorrect username / password"
+                })
+            }
+            else {
                 getRoomWithData(entry[0]['rid'], callback);
             }
         }
@@ -91,35 +98,15 @@ function getRoomWithData(rid, callback) {
                 room: {
                     id: rid,
                     messages: msgs
-                }
+                },
+                message: "User authenticated!"
             }
             callback(result);
         }
     })
 }
 
-function getRoomWithData2(rid) {
-    model.Data.find({ 'rid': rid }, function (err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            let msgs = [];
-            for (let item of data) {
-                msgs.push({
-                    msg: item["msg"],
-                    date: item["date"],
-                    time: item["time"],
-                    tag: item["tag"],
-                    type: item["type"]
-                })
-            }
-            console.log(msgs);
-            return msgs;
-        }
-    })
-}
-
-function addDefaultMessage(rid) {
+function addDefaultMessage(rid, callback) {
     let result = [];
     let messages = ["Hi there!", "Welcome to Scratch!", "Feel free to have a look around.."];
 
@@ -148,22 +135,6 @@ function addDefaultMessage(rid) {
             }
         })
     }
-    return result;
-}
-
-function constructData(data, status, rid) {
-    // console.log(data);
-    // let result = {
-    //     success: status,
-    //     room: {
-    //         id: rid
-    //     }
-    // }
-
-
-    // console.log(msgs);
-
-    // result["room"]["messages"] = msgs;
-    // console.log(result["room"]["messages"]);
-
+    getRoomWithData(rid, callback);
+    // return result;
 }
