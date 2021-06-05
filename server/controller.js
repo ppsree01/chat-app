@@ -63,7 +63,7 @@ export function validate(username, password, callback) {
                         
                     }
                 })
-            } else if (entry.length > 0 && entry["pwd"] != password)  {
+            } else if (entry.length > 0 && entry[0]["pwd"] != password)  {
                 callback({
                     success: false,
                     room : {},
@@ -137,4 +137,8 @@ function addDefaultMessage(rid, callback) {
     }
     getRoomWithData(rid, callback);
     // return result;
+}
+
+export function addMessagesToRoom(rid, ) {
+
 }
