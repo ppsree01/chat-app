@@ -146,7 +146,6 @@ function addDefaultMessage(rid, callback) {
 
 export function addMessagesToRoom(rid, msg, tag, type, callback) {
     let datetime = new Date();
-    console.log(datetime);
     let data = new model.Data({
         rid: rid,
         msg: msg,
