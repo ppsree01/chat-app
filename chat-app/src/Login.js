@@ -1,14 +1,14 @@
 import Axios from 'axios';
 import React, { useState } from 'react';
-
+import Link from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 const axios = require('axios');
 const SERVER_URL = "localhost:8080";
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
-    
+    const history = useHistory();   
 
     function auth() {
        console.log(username, password); 
@@ -22,19 +22,17 @@ export default function Login() {
             },
            responseType: 'json'
        }).then(function(response){
-            if (response.success == true) {
-                // redirect
-                console.log(response);
-            } else {
-                console.log(response);
-                // stay here
+            if (response.data && response.data.success == true) {
+                // redirect passing in the username, rid and messages.
+                window.localStorage.setItem("data", JSON.stringify(response.data.room));
+                history.push("/chat");
             }
        }).catch(function(error) {
             console.log(error);
        })
     }
 
-    return (<>
+    return (<> 
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
             <div className="mb-4">
                 <label className="block text-grey-darker text-sm font-bold mb-2" for="username">
