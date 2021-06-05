@@ -26,7 +26,13 @@ export default {
         handler: (req,res) => {
             var user = req.body.username;
             var pwd = req.body.password;
-            validate(user, pwd, (result) => {res.send(result)});
+            // console.log(req.body);
+            // console.log(req.username);
+            validate(user, pwd, (result) => {
+                console.log(result);
+                res.send(result);
+            });
+
         }
     },
     "/users": {

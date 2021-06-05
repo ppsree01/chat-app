@@ -4,7 +4,7 @@ const msgSchema = { msg: 'string', time: 'number', user: 'string' };
 
 const Message = mongoose.model('Message', msgSchema);
 
-const userSchema = {uid: 'string', pwd: 'string'};
+const userSchema = {uid: 'string', pwd: 'string', rid: 'number'};
 
 const dataSchema = {rid: 'number', msg: 'string', date: 'string', time: 'string', tag: 'string', type: 'string'};
 

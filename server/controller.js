@@ -1,13 +1,11 @@
-// import Message  from "./mongoose-model.js";
-// import User from "./mongoose-model.js";
-// import Data  from "./mongoose-model.js";
+
 import model from "./mongoose-model.js";
 
 export function getMessages(userid, callback) {
-    Message.find({'user':userid}, function(err, messages){
+    Message.find({ 'user': userid }, function (err, messages) {
         if (err) {
             console.log(err);
-        } else{
+        } else {
             console.log(messages);
             return callback(messages);
         }
@@ -36,61 +34,136 @@ function addMessageToDB(userid, msg, callback) {
 }
 
 export function getAllUsers() {
-    model.User.find({}, function(err, entry){
+    model.User.find({}, function (err, entry) {
         return entry;
     })
 }
 
 export function validate(username, password, callback) {
     // Check if the user name and password is present, retrieve the room details.
-    model.User.find({'uid':username, 'pwd':password}, function(err, entry) {
+    var rid = 0;
+    model.User.count((err, count) => {
+        rid = count + 1;
+    })
+    model.User.find({ 'uid': username, 'pwd': password }, function (err, entry) {
         if (err) {
             callback(err);
-            // return constructData([], false);
         } else {
-            // Call function to get room, data for this user.
-            // callback(getRoomWithData(entry));
-            const user = new model.User({
-                uid: username,
-                pwd: password,
-            })
-            user.save((err) => {
-                if (err != null) {
-                    callback("Failed");
-                } else {
-                    callback("Saved");
-                }
-            })
+            if (entry.length == 0) {
+                const user = new model.User({
+                    uid: username,
+                    pwd: password,
+                    rid: +rid
+                })
+                user.save((err) => {
+                    if (err != null) {
+                        callback(err);
+                    } else {
+                        addDefaultMessage(rid);
+                        getRoomWithData(rid, callback);
+                    }
+                })
+            } else {
+                getRoomWithData(entry[0]['rid'], callback);
+            }
         }
     })
 }
 
-function getRoomWithData(userData) {
-    model.Data.find({'rid': userData['rid']}, function(err, data) {
+function getRoomWithData(rid, callback) {
+    model.Data.find({ 'rid': rid }, function (err, data) {
         if (err) {
             console.log(err);
-            return constructData([], true);
         } else {
-            return constructData(data, true); 
+            let msgs = [];
+            for (let item of data) {
+                msgs.push({
+                    msg: item["msg"],
+                    date: item["date"],
+                    time: item["time"],
+                    tag: item["tag"],
+                    type: item["type"]
+                })
+            }
+            console.log(msgs);
+            let result = {
+                success: true,
+                room: {
+                    id: rid,
+                    messages: msgs
+                }
+            }
+            callback(result);
         }
     })
 }
 
-function constructData(data, status) {
-    let result = {
-        success: status,
-        room: {
-            messages: []
+function getRoomWithData2(rid) {
+    model.Data.find({ 'rid': rid }, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            let msgs = [];
+            for (let item of data) {
+                msgs.push({
+                    msg: item["msg"],
+                    date: item["date"],
+                    time: item["time"],
+                    tag: item["tag"],
+                    type: item["type"]
+                })
+            }
+            console.log(msgs);
+            return msgs;
         }
-    }
-    for (let item of data) {
-        result.room.message.push({
-            msg: item["msg"],
-            date: item["date"],
-            time: item["time"],
-            tag: item["tag"],
-            type: item["type"]
+    })
+}
+
+function addDefaultMessage(rid) {
+    let result = [];
+    let messages = ["Hi there!", "Welcome to Scratch!", "Feel free to have a look around.."];
+
+    for (let message of messages) {
+        result.push({
+            rid: rid,
+            msg: message,
+            date: "01-01-2020",
+            time: "01:01:01",
+            tag: "admin",
+            type: "text"
+        });
+        let data = new model.Data({
+            rid: rid,
+            msg: message,
+            date: "01-01-2020",
+            time: "01:01:01",
+            tag: "admin",
+            type: "text"
+        })
+        data.save((err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("saved");
+            }
         })
     }
     return result;
+}
+
+function constructData(data, status, rid) {
+    // console.log(data);
+    // let result = {
+    //     success: status,
+    //     room: {
+    //         id: rid
+    //     }
+    // }
+
+
+    // console.log(msgs);
+
+    // result["room"]["messages"] = msgs;
+    // console.log(result["room"]["messages"]);
+
 }
