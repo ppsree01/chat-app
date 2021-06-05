@@ -78,29 +78,35 @@ export function validate(username, password, callback) {
 }
 
 function getRoomWithData(rid, callback) {
+    let result = {
+        success: true,
+        room: {
+            id: rid,
+            messages: []
+        },
+        message: ""
+    }
     model.Data.find({ 'rid': rid }, function (err, data) {
         if (err) {
-            console.log(err);
+            result.success = false;
+            delete result.room.messages;
+            delete result.room.rid;
+            result.message = "Data could not be found";
+            callback(result);
         } else {
             let msgs = [];
             for (let item of data) {
                 msgs.push({
                     msg: item["msg"],
-                    date: item["date"],
-                    time: item["time"],
+                    datetime: item["datetime"],
                     tag: item["tag"],
                     type: item["type"]
                 })
             }
-            console.log(msgs);
-            let result = {
-                success: true,
-                room: {
-                    id: rid,
-                    messages: msgs
-                },
-                message: "User authenticated!"
-            }
+            result.success = true;
+            result.room.messages = msgs;
+            result.room.rid = rid;
+            result.message = "User authenticated!"
             callback(result);
         }
     })
@@ -108,22 +114,21 @@ function getRoomWithData(rid, callback) {
 
 function addDefaultMessage(rid, callback) {
     let result = [];
+    let datetime = new Date();
     let messages = ["Hi there!", "Welcome to Scratch!", "Feel free to have a look around.."];
 
     for (let message of messages) {
         result.push({
             rid: rid,
             msg: message,
-            date: "01-01-2020",
-            time: "01:01:01",
+            datetime: datetime,
             tag: "admin",
             type: "text"
         });
         let data = new model.Data({
             rid: rid,
             msg: message,
-            date: "01-01-2020",
-            time: "01:01:01",
+            datetime: datetime,
             tag: "admin",
             type: "text"
         })
@@ -139,6 +144,34 @@ function addDefaultMessage(rid, callback) {
     // return result;
 }
 
-export function addMessagesToRoom(rid, ) {
-
+export function addMessagesToRoom(rid, msg, tag, type, callback) {
+    let datetime = new Date();
+    console.log(datetime);
+    let data = new model.Data({
+        rid: rid,
+        msg: msg,
+        datetime: datetime,
+        tag: tag,
+        type: type
+    });
+    data.save((err) => {
+        if (err) {
+            console.log("Failed")
+            callback({
+                success: false,
+                room: {},
+                message: "Data not saved."
+            })
+        } else {
+            console.log("Success")
+            callback({
+                success: true,
+                room: {
+                    rid: rid,
+                    messages: [data]
+                },
+                message: "Data saved"
+            })
+        }
+    })
 }
