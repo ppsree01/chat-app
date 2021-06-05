@@ -2,7 +2,6 @@ import React, {useState, useReducer} from 'react';
 import ChatCountDialog from './ChatCountDialog';
 import Message from './Message';
 import _ from 'lodash';
-import { findAllByTestId } from '@testing-library/react';
 const SERVER_URL = "api.ppsree.net";
 
 const axios = require('axios');
