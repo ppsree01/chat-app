@@ -1,4 +1,4 @@
-import {getMessages, addMessage, validate, addMessagesToRoom} from "./controller.js";
+import {getMessages, addMessage, validate, addMessagesToRoom, getRoomMessages} from "./controller.js";
 
 export default {
     // "/:userid": {
@@ -44,11 +44,13 @@ export default {
             })
         }
     }, 
-    "/users": {
+    "/room/:rid": {
         method: "get",
         handler: (req,res) => {
-            var result = getAllUsers();
-            res.send(result);
+            getRoomMessages(req.params.rid, (response) => {
+                res.send(response);
+            })
+            
         }
     }
 }

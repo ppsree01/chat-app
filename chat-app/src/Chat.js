@@ -1,51 +1,16 @@
-import React, {useState, useReducer} from 'react';
+import React, { useState, useReducer } from 'react';
 import ChatCountDialog from './ChatCountDialog';
-import Message from './Message';
+import AdminMessage from './AdminMessage';
+import ChatHeader from './ChatHeader';
+import UserMessage from './UserMessage';
 import _ from 'lodash';
-const SERVER_URL = "api.ppsree.net";
-
+import { SERVER_URL } from './config';
 const axios = require('axios');
-const styles = {
-    message: {
-        padding: '1em',
-        border: '1px solid gray',
-        marginBottom: '0px',
-        resize: 'none'
-        // fontFamily: 'roboto'
-    },
-    container: {
-        // textAlign: 'center',
-        // top: '20%',
-        // left: '30%',
-        overflow: 'auto',
-        position: 'fixed',
-        height: '400px',
-        margin: '1em',
-        // width: '80%',
-        maxWidth: '19em',
-        minWidth: '19em',
-        border: '1px solid gray',
-        boxSizing: 'border-box',
-        alignItems: 'center'
-    },
-    button: {
-        padding: '1em',
-        backgroundColor: 'rgb(59, 137, 116)',
-        border: '1px solid gray',
-        color: 'white',
-        fontWeight: 'bold',
-        // width: '100%'
-        // marginTop: '-1em'
-    },
-    typeContainer : {
-        display: 'flex',
-        padding: '1em',
-        margin: '0',
-        position: 'fixed',
-        // width: '110%',
-        top: '330px'
-    }
-};
+
+const style = {
+    // background: "linear-gradient(110deg, #fff 55%, #fdcd3b 55%)"
+    // backgroundColor: '#fdcd3b'
+}
 
 function Chat() {
     const [message, setMessage] = useState("");
@@ -53,11 +18,15 @@ function Chat() {
         isLoading: false,
         isLoaded: false,
     });
+    const [notes , addToNotes] = useReducer((notes, message) => 
+    {
+        return [...notes, message];
+    }, []);
     const [chatState, addToMessages] = useReducer(
-        (chatState, {messages}) => {  
-            
+        (chatState, { messages }) => {
+
             let chatMessages = [...chatState.messages, ...messages];
-            
+
             chatMessages = _.sortBy(chatMessages, ['time']);
 
             return {
@@ -70,78 +39,127 @@ function Chat() {
             messages: []
         }
     );
-    const {chatCount, messages} = chatState;
-    
-    if (!loadingStatus.isLoading && !loadingStatus.isLoaded) {
-        setLoadingStatus({
-            ...loadingStatus,
-            isLoading: true,
-        });
-        axios({
-            method: 'get',
-            url: `http://${SERVER_URL}/vava`,
-            responseType: 'json'
-        }).then(function(response){
-            let msgs = response.data;
-            console.log(response);
-            console.log(message.length);
-            addToMessages({messages: msgs})
-            setLoadingStatus({
-                isLoading: false,
-                isLoaded: true,
-            });
-        }).catch(function(error){
-            setLoadingStatus({
-                isLoading: false,
-                isLoaded: true,
-            });
-        })
-    }
+    const { chatCount, messages } = chatState;
+    const name = "Sree";
+
+    // if (!loadingStatus.isLoading && !loadingStatus.isLoaded) {
+    //     setLoadingStatus({
+    //         ...loadingStatus,
+    //         isLoading: true,
+    //     });
+    //     axios({
+    //         method: 'get',
+    //         url: SERVER_URL,
+    //         responseType: 'json'
+    //     }).then(function (response) {
+    //         let msgs = response.data;
+    //         console.log(response);
+    //         console.log(message.length);
+    //         addToMessages({ messages: msgs })
+    //         setLoadingStatus({
+    //             isLoading: false,
+    //             isLoaded: true,
+    //         });
+    //     }).catch(function (error) {
+    //         setLoadingStatus({
+    //             isLoading: false,
+    //             isLoaded: true,
+    //         });
+    //     })
+    // }
 
     let msgs = [];
-    for (let i=0; i<messages.length; i++) {
-        msgs.push(<Message key={i.toString()} text={messages[i].msg} id={messages[i].id}/>);
+    let data = JSON.parse(window.localStorage.getItem("data"));
+    console.log(data);
+    for (let i = 0; i < data.messages.length; i++) {
+        let tag = data.messages[i].tag;
+        if (tag == "admin") {
+            msgs.push(<AdminMessage key={i.toString()} text={data.messages[i].msg} tag={data.messages[i].tag} id={i.toString()} />)
+        } else {
+            msgs.push(<UserMessage key={i.toString()} text={data.messages[i].msg} tag={data.messages[i].tag} id={i.toString()} />)
+        }
     }
 
-    return(
-        <div>
-            <div style={styles.container}><ChatCountDialog countOfChats={chatCount}/>
-            {
-                !loadingStatus.isLoaded ? "Loading" : ""
-            }
-            {msgs}
-            <br /><br />
-            <br />
-            <div style={styles.typeContainer}><textarea value={message} style={styles.message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)}/>
-            {/* <br /> */}
-            <button style={styles.button} onClick={
-                () => {
-                    let random = Math.floor(Math.random()*11);
-                    let date = new Date;
-                    let time = date.getTime();
-                    if (message != "") {
-                        setMessage("");    
-                        axios({
-                            method: 'post',
-                            url:`http://${SERVER_URL}/add`,
-                            data: {
-                                userid: "vava",
-                                message: {
-                                    msg: message,
-                                    time: time
-                                }
-                            }
-                        }).then((response) => {
-                            console.log(response);
-                            addToMessages({messages: [{"msg":message,"time":time}]});
-                        })
-                    };
-                            
-                    
-                }
-            }>Send</button></div></div>
+    return (
+        <div className="">
+            <div style={style} className="h-screen w-full flex content-center">
+                <div className="m-auto">
+                    <div className="flex flex-col h-screen w-screen justify-between">
+                        {/* <header className="content-center w-full h-16 bg-yellow-400">
+                            <span className="align-bottom">Hey there!</span>
+                        </header> */}
+                        <ChatHeader className="w-full" name={name}/>
+                        <main className="mb-auto h-screen overflow-y-scroll bg-yellow-100">
+                            {msgs}
+                        </main>
+                        <hr className="divide-y-6"></hr>
+                        <footer class="h-24 w-screen flex">
+                            <textarea className="w-full outline-none p-2.5" value={message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)} />
+                            <button className="w-24 bg-yellow-500 p-2.5" onClick={() => {
+                                let date = new Date;
+                                if (message != "") {
+                                    setMessage("");    
+                                    axios({
+                                        method: 'post',
+                                        url:`${SERVER_URL}/add`,
+                                        data: {
+                                            rid: 1,
+                                            msg: message,
+                                            tag: "user",
+                                            type: "text"
+                                            }
+                                    }).then((response) => {
+                                        console.log(response);
+                                        addToNotes(message);
+                                    })
+                                }; 
+                            }}>Send</button>
+                        </footer>
+                    </div>
+                </div>
+            </div>
         </div>
-    );
+    )
+
+    // return(
+    //     <div >
+    //         <div><ChatCountDialog countOfChats={chatCount}/>
+    //         {
+    //             !loadingStatus.isLoaded ? "Loading" : ""
+    //         }
+    //         {msgs}
+    //         <br /><br />
+    //         <br />
+    //         <div><textarea value={message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)}/>
+    //         {/* <br /> */}
+    //         <button onClick={
+    //             () => {
+    //                 let random = Math.floor(Math.random()*11);
+    //                 let date = new Date;
+    //                 let time = date.getTime();
+    //                 if (message != "") {
+    //                     setMessage("");    
+    //                     axios({
+    //                         method: 'post',
+    //                         url:`http://${SERVER_URL}/add`,
+    //                         data: {
+    //                             userid: "vava",
+    //                             message: {
+    //                                 msg: message,
+    //                                 time: time
+    //                             }
+    //                         }
+    //                     }).then((response) => {
+    //                         console.log(response);
+    //                         addToMessages({messages: [{"msg":message,"time":time}]});
+    //                     })
+    //                 };
+
+
+    //             }
+    //         }>Send</button></div></div>
+    //     </div>
+    // );
 }
 
 export default Chat;

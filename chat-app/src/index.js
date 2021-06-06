@@ -22,6 +22,9 @@ ReactDOM.render(
           <Route path="/chat" >
               <Chat />
           </Route>
+          <Route path="/" >
+              <Home />
+          </Route>
         </Switch>
       </div>
     </Router>

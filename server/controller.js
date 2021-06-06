@@ -174,3 +174,32 @@ export function addMessagesToRoom(rid, msg, tag, type, callback) {
         }
     })
 }
+
+export function getRoomMessages(rid, callback) {
+    let result = [];
+    model.Data.find({"rid":+rid}, (err, data) => {
+        if (err) {
+            console.log(err);
+            callback({
+                success: false,
+                room: []
+            });
+        } else {
+            let msgs = [];
+            console.log(data);
+            for (let entry of data) {
+                msgs.push({
+                    msg: entry.msg,
+                    datetime: entry.datetime, 
+                    tag: entry.tag,
+                    type: entry.type
+                })
+            }
+            callback({
+                success: true,
+                room: msgs
+            })
+        }
+    })
+
+}
