@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  react-server:
+  react-server2:
     build: .
 networks:
   default:
