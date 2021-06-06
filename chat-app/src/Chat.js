@@ -42,6 +42,12 @@ function Chat() {
     const { chatCount, messages } = chatState;
     const name = "Sree";
 
+    function storeInitialData() {
+        let data = JSON.parse(window.localStorage.getItem("data"));
+        for (let item of data) {
+            
+        }
+    }
     // if (!loadingStatus.isLoading && !loadingStatus.isLoaded) {
     //     setLoadingStatus({
     //         ...loadingStatus,
@@ -95,7 +101,7 @@ function Chat() {
                         <hr className="divide-y-6"></hr>
                         <footer class="h-24 w-screen flex">
                             <textarea className="w-full outline-none p-2.5" value={message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)} />
-                            <button className="w-24 bg-yellow-500 p-2.5" onClick={() => {
+                            <button className="w-24 bg-yellow-500 p-2.5 text-white font-semibold" onClick={() => {
                                 let date = new Date;
                                 if (message != "") {
                                     setMessage("");    
