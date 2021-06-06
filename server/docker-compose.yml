@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  chat-server2:
+  chat-server:
     build: .
     ports:
       - 3030:8080
