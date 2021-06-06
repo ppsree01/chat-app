@@ -2,8 +2,9 @@ import Axios from 'axios';
 import React, { useState } from 'react';
 import Link from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import * as config from 'config';
 const axios = require('axios');
-const SERVER_URL = "localhost:8080";
+const SERVER_URL = config.SERVER_URL;
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ export default function Login() {
        // Axios to call: localhost:8080/auth
        axios({
            method: 'post',
-           url: `http://${SERVER_URL}/auth`,
+           url: `${SERVER_URL}/auth`,
            data: {
                 username: username,
                 password: password
