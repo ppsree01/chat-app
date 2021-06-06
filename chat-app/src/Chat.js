@@ -20,7 +20,7 @@ function Chat() {
     });
     const [notes , addToNotes] = useReducer((notes, message) => 
     {
-        return [...notes, message];
+        return [...notes, ...message];
     }, []);
     const [chatState, addToMessages] = useReducer(
         (chatState, { messages }) => {
@@ -40,60 +40,59 @@ function Chat() {
         }
     );
     const { chatCount, messages } = chatState;
-    const name = "Sree";
 
-    function storeInitialData() {
-        let data = JSON.parse(window.localStorage.getItem("data"));
-        for (let item of data) {
-            
-        }
-    }
-    // if (!loadingStatus.isLoading && !loadingStatus.isLoaded) {
-    //     setLoadingStatus({
-    //         ...loadingStatus,
-    //         isLoading: true,
-    //     });
-    //     axios({
-    //         method: 'get',
-    //         url: SERVER_URL,
-    //         responseType: 'json'
-    //     }).then(function (response) {
-    //         let msgs = response.data;
-    //         console.log(response);
-    //         console.log(message.length);
-    //         addToMessages({ messages: msgs })
-    //         setLoadingStatus({
-    //             isLoading: false,
-    //             isLoaded: true,
-    //         });
-    //     }).catch(function (error) {
-    //         setLoadingStatus({
-    //             isLoading: false,
-    //             isLoaded: true,
-    //         });
-    //     })
-    // }
-
+    const name = window.localStorage.getItem("user");
+    
     let msgs = [];
     let data = JSON.parse(window.localStorage.getItem("data"));
-    console.log(data);
-    for (let i = 0; i < data.messages.length; i++) {
-        let tag = data.messages[i].tag;
+    const roomid = data.rid;
+
+    
+
+    if (!loadingStatus.isLoading && !loadingStatus.isLoaded) {
+        setLoadingStatus({
+            ...loadingStatus,
+            isLoading: true,
+        });
+        axios({
+            method: 'get',
+            url: `${SERVER_URL}/room/${roomid}`,
+            responseType: 'json'
+        }).then(function (response) {
+            console.log(response);
+            let msgs = response.data.room;
+            addToNotes(msgs);
+            setLoadingStatus({
+                isLoading: false,
+                isLoaded: true,
+            });
+        }).catch(function (error) {
+            setLoadingStatus({
+                isLoading: false,
+                isLoaded: true,
+            });
+        })
+    }
+
+    
+
+    // console.log(data);
+    for (let i = 0; i < notes.length; i++) {
+        let tag = notes[i].tag;
         if (tag == "admin") {
-            msgs.push(<AdminMessage key={i.toString()} text={data.messages[i].msg} tag={data.messages[i].tag} id={i.toString()} />)
+            msgs.push(<AdminMessage key={i.toString()} text={notes[i].msg} tag={notes[i].tag} id={i.toString()} />)
         } else {
-            msgs.push(<UserMessage key={i.toString()} text={data.messages[i].msg} tag={data.messages[i].tag} id={i.toString()} />)
+            msgs.push(<UserMessage key={i.toString()} text={notes[i].msg} tag={notes[i].tag} id={i.toString()} />)
         }
     }
+    
 
     return (
         <div className="">
             <div style={style} className="h-screen w-full flex content-center">
                 <div className="m-auto">
                     <div className="flex flex-col h-screen w-screen justify-between">
-                        {/* <header className="content-center w-full h-16 bg-yellow-400">
-                            <span className="align-bottom">Hey there!</span>
-                        </header> */}
+                        
                         <ChatHeader className="w-full" name={name}/>
                         <main className="mb-auto h-screen overflow-y-scroll bg-yellow-100">
                             {msgs}
@@ -109,14 +108,22 @@ function Chat() {
                                         method: 'post',
                                         url:`${SERVER_URL}/add`,
                                         data: {
-                                            rid: 1,
+                                            rid: roomid,
                                             msg: message,
                                             tag: "user",
                                             type: "text"
                                             }
                                     }).then((response) => {
                                         console.log(response);
-                                        addToNotes(message);
+                                        addToNotes([
+                                            {
+                                                rid: roomid,
+                                                msg: message,
+                                                tag: "user",
+                                                type: "text"
+                                                }
+                                        ]);
+
                                     })
                                 }; 
                             }}>Send</button>

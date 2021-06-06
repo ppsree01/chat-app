@@ -41,40 +41,45 @@ export function getAllUsers() {
 
 export function validate(username, password, callback) {
     // Check if the user name and password is present, retrieve the room details.
+
     var rid = 0;
     model.User.count((err, count) => {
         rid = count + 1;
-    })
-    model.User.find({ 'uid': username}, function (err, entry) {
-        if (err) {
-            callback(err);
-        } else {
-            if (entry.length == 0) {
-                const user = new model.User({
-                    uid: username,
-                    pwd: password,
-                    rid: +rid
-                })
-                user.save((err) => {
-                    if (err != null) {
-                        callback(err);
-                    } else {
-                        addDefaultMessage(rid, callback);
-                        
-                    }
-                })
-            } else if (entry.length > 0 && entry[0]["pwd"] != password)  {
-                callback({
-                    success: false,
-                    room : {},
-                    message : "Incorrect username / password"
-                })
+        model.User.find({'uid': username}, function (err, entry) {
+            
+            if (err) {
+                callback(err);
+            } else {
+                console.log(rid);
+                if (entry.length == 0) {
+                    const user = new model.User({
+                        uid: username,
+                        pwd: password,
+                        rid: +rid
+                    })
+                    user.save((err) => {
+                        if (err != null) {
+                            callback(err);
+                        } else {
+                            addDefaultMessage(rid, callback);
+                            
+                        }
+                    })
+                } else if (entry.length > 0 && entry[0]["pwd"] != password)  {
+                    callback({
+                        success: false,
+                        room : {},
+                        message : "Incorrect username / password"
+                    })
+                }
+                else {
+                    console.log(entry);
+                    getRoomWithData(entry[0]['rid'], callback);
+                }
             }
-            else {
-                getRoomWithData(entry[0]['rid'], callback);
-            }
-        }
-    })
+        })
+    }); 
+   
 }
 
 function getRoomWithData(rid, callback) {
@@ -115,7 +120,7 @@ function getRoomWithData(rid, callback) {
 function addDefaultMessage(rid, callback) {
     let result = [];
     let datetime = new Date();
-    let messages = ["Hi there!", "Welcome to Scratch!", "Feel free to have a look around.."];
+    let messages = ["Welcome to NotesU!"];
 
     for (let message of messages) {
         result.push({

@@ -9,6 +9,7 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const history = useHistory();   
+    let message_to_user = "Please choose a password.";
 
     function auth() {
        console.log(username, password); 
@@ -24,8 +25,13 @@ export default function Login() {
        }).then(function(response){
             if (response.data && response.data.success == true) {
                 // redirect passing in the username, rid and messages.
+                window.localStorage.setItem("user", username);
                 window.localStorage.setItem("data", JSON.stringify(response.data.room));
                 history.push("/chat");
+            }
+            else if (response.data && response.data.success == false ) {
+                console.log("No");
+                message_to_user = "Incorrect username / password";
             }
        }).catch(function(error) {
             console.log(error);
@@ -45,7 +51,7 @@ export default function Login() {
                     Password
                 </label>
                 <input className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3" value={password} onChange={(evt) => {setPassword(evt.target.value)}} id="password" type="password" placeholder="******************" />
-                <p className="text-red text-xs italic">Please choose a password.</p>
+                <p className="text-red text-xs italic">{message_to_user}</p>
             </div>
             <div className="items-center justify-between">
                 <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" type="button" onClick={() => {auth()}}>

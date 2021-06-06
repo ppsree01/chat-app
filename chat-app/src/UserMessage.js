@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 function UserMessage({text,id, tag}) {
-    const style = text.length > 90 ? 
+    const style = text && text.length > 90 ? 
     "align-right right-0 rounded-lg border-r-8 p-2.5 m-2.5 border-yellow-500 w-auto w-96 break-normal bg-white text-right" : 
     "right-0 rounded-lg border-r-8 p-2.5 m-2.5 border-yellow-500 w-max w-96 break-normal bg-white text-right"
 
