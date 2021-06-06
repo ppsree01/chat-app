@@ -2,9 +2,10 @@ import Axios from 'axios';
 import React, { useState } from 'react';
 import Link from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import * as config from 'config';
+// import * as config from './config.js';
+import { SERVER_URL } from './config';
 const axios = require('axios');
-const SERVER_URL = config.SERVER_URL;
+// const SERVER_URL = config.SERVER_URL;
 
 export default function Login() {
     const [username, setUsername] = useState("");
