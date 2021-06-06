@@ -1,0 +1,13 @@
+import React, {useState} from 'react';
+
+function AdminMessage({text,id, tag}) {
+    
+    const style = text.length > 90 ? "rounded-lg border-l-8 p-2.5 m-2.5 border-yellow-500 w-auto w-96 break-normal bg-white text-right" : "rounded-lg border-l-8 p-2.5 m-2.5 border-yellow-500 w-max w-96 break-normal bg-white text-right" 
+    return (
+        <div tag={tag} className={style} data-id={id}>
+            <p className="text-left">{text}</p>
+        </div>
+    );
+}
+
+export default AdminMessage;
