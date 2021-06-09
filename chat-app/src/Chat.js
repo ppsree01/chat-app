@@ -22,32 +22,11 @@ function Chat() {
     {
         return [...notes, ...message];
     }, []);
-    const [chatState, addToMessages] = useReducer(
-        (chatState, { messages }) => {
-
-            let chatMessages = [...chatState.messages, ...messages];
-
-            chatMessages = _.sortBy(chatMessages, ['time']);
-
-            return {
-                messages: chatMessages,
-                chatCount: chatMessages.length,
-            }
-        },
-        {
-            chatCount: 0,
-            messages: []
-        }
-    );
-    const { chatCount, messages } = chatState;
 
     const name = window.localStorage.getItem("user");
     
-    let msgs = [];
     let data = JSON.parse(window.localStorage.getItem("data"));
     const roomid = data.rid;
-
-    
 
     if (!loadingStatus.isLoading && !loadingStatus.isLoaded) {
         setLoadingStatus({
@@ -76,7 +55,7 @@ function Chat() {
 
     
 
-    // console.log(data);
+    let msgs = [];
     for (let i = 0; i < notes.length; i++) {
         let tag = notes[i].tag;
         if (tag == "admin") {
@@ -134,45 +113,6 @@ function Chat() {
         </div>
     )
 
-    // return(
-    //     <div >
-    //         <div><ChatCountDialog countOfChats={chatCount}/>
-    //         {
-    //             !loadingStatus.isLoaded ? "Loading" : ""
-    //         }
-    //         {msgs}
-    //         <br /><br />
-    //         <br />
-    //         <div><textarea value={message} placeholder="Type a message" onChange={(evt) => setMessage(evt.target.value)}/>
-    //         {/* <br /> */}
-    //         <button onClick={
-    //             () => {
-    //                 let random = Math.floor(Math.random()*11);
-    //                 let date = new Date;
-    //                 let time = date.getTime();
-    //                 if (message != "") {
-    //                     setMessage("");    
-    //                     axios({
-    //                         method: 'post',
-    //                         url:`http://${SERVER_URL}/add`,
-    //                         data: {
-    //                             userid: "vava",
-    //                             message: {
-    //                                 msg: message,
-    //                                 time: time
-    //                             }
-    //                         }
-    //                     }).then((response) => {
-    //                         console.log(response);
-    //                         addToMessages({messages: [{"msg":message,"time":time}]});
-    //                     })
-    //                 };
-
-
-    //             }
-    //         }>Send</button></div></div>
-    //     </div>
-    // );
 }
 
 export default Chat;
