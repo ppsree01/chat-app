@@ -6,5 +6,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.10.15"
   },
-  "type":"module"
+  "type": "module",
+  "devDependencies": {
+    "lodash": "^4.17.21"
+  }
 }
