@@ -1,9 +1,16 @@
-import express from 'express';
+import dotenv from 'dotenv'
+if (process.env.__DEV__) {
+    dotenv.config()
+} else {
+    dotenv.config({ path: '.env.production' })
+}
+
 import _ from 'lodash';
+import express from 'express';
 import {initializeMongo} from "./mongo-init.js"
 import routes from "./routes.js";
 const apps = express();
-const port = 80;
+const port = 8080;
 
 initializeMongo(() => {
     console.log("Entered");

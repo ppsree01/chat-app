@@ -10,9 +10,7 @@ function checkConnStatus(callback){
 
 export const initializeMongo = (callback) => 
     {
-        //mongodb://root:example@mongo:27017/admin
-        // mongodb://root:example@localhost:8888/admin
-        mongoose.connect('mongodb://root:example@mongo:27017/admin',{useNewUrlParser: true, useUnifiedTopology: true})
+        mongoose.connect(process.env.MONGO_URL,{useNewUrlParser: true, useUnifiedTopology: true})
 .then(
     () => {
         checkConnStatus(callback); 

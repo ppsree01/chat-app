@@ -4,45 +4,30 @@ SERVER := server
 CONTAINERS := containers
 CHAT_APP := chat-app
 
-#STOP := docker-compose stop
-#START := docker-compose up -d --build
-
-# stop-server:
-# 	$(STOP)
-# 	cd $(CURDIR)/$(SERVER) && $(STOP)
-# start-server:
-# 	cd $(CURDIR)/$(SERVER) && $(START)
-# stop-containers:
-# 	cd $(CURDIR)/$(CONTAINERS) && $(STOP)
-# start-containers:
-# 	cd $(CURDIR)/$(CONTAINERS) && $(START)
-# start-chat-app:
-# 	cd $(CURDIR)/$(CHAT_APP) && $(START)
-# stop-chat-app:
-# 	cd $(CURDIR)/$(CHAT_APP) && $(STOP)
-# start: start-containers start-server start-chat-app
-# stop: stop-containers stop-server stop-chat-app
-
 DOCKER_COMPOSE := docker-compose
 DOCKER_COMPOSE_FILE := docker-compose.yml
 STOP := stop
 START := up -d --build
-# SHOW_DOCKER_PS := docker ps
 
 stop-server:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(SERVER)/$(DOCKER_COMPOSE_FILE) $(STOP)
 start-server:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(SERVER)/$(DOCKER_COMPOSE_FILE) $(START)
+start-server-local:
+	cd server && __DEV__=true nodemon server.js
 stop-containers:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(CONTAINERS)/$(DOCKER_COMPOSE_FILE) $(STOP)
 start-containers:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(CONTAINERS)/$(DOCKER_COMPOSE_FILE) $(START)
 stop-chat-app:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(CHAT_APP)/$(DOCKER_COMPOSE_FILE) $(STOP)
+start-chat-app-local:
+	cd chat-app && npm start
 start-chat-app:
 	$(DOCKER_COMPOSE) -f $(CURDIR)/$(CHAT_APP)/$(DOCKER_COMPOSE_FILE) $(START)
 docker-status:
 	docker ps
 start: start-containers start-server start-chat-app
+start-server-local: start-containers start-server-local
 stop: stop-containers stop-server stop-chat-app
 restart: stop start docker-status

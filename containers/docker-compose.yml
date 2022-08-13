@@ -9,7 +9,7 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - 8888:27017
+      - 8889:27017
 networks:
   default:
     name: main-network
